@@ -1,8 +1,16 @@
 import {useLoaderData} from '@remix-run/react';
-import {json} from '@shopify/remix-oxygen';
+import {LoaderArgs, json} from '@shopify/remix-oxygen';
 import ProductGrid from '../components/ProductGrid';
+import {Collection} from '@shopify/hydrogen/storefront-api-types';
 
-const seo = ({data}) => ({
+interface QueryData {
+  collection: Collection | undefined;
+}
+interface LoaderReturn {
+  data: QueryData | undefined;
+}
+
+const seo = ({data}: LoaderReturn) => ({
   title: data?.collection?.title,
   description: data?.collection?.description.substr(0, 154),
 });
@@ -11,7 +19,7 @@ export const handle = {
   seo,
 };
 
-export async function loader({params, context, request}) {
+export async function loader({params, context, request}: LoaderArgs) {
   const {handle} = params;
   const searchParams = new URL(request.url).searchParams;
   const cursor = searchParams.get('cursor');
@@ -35,7 +43,7 @@ export async function loader({params, context, request}) {
   });
 }
 
-export function meta({data}) {
+export function meta({data}: LoaderReturn) {
   return [
     {title: data?.collection?.title ?? 'Collection'},
     {description: data?.collection?.description},

@@ -14,11 +14,15 @@ export default function ProductCard({product}: Props) {
       <div className="grid gap-6">
         <div className="shadow-sm rounded relative">
           {isDiscounted && (
-            <label className="subpixel-antialiased absolute top-0 right-0 m-4 text-right text-notice text-red-600 text-xs">
+            <span className="subpixel-antialiased absolute top-0 right-0 m-4 text-right text-notice text-red-600 text-xs">
               Sale
-            </label>
+            </span>
           )}
-          <Image data={product.variants.nodes[0].image} alt={product.title} />
+          <Image
+            data={product.variants.nodes[0].image}
+            alt={product.title}
+            sizes="(max-width: 32em) 100vw, 33vw"
+          />
         </div>
         <div className="grid gap-1">
           <h3 className="max-w-prose text-copy w-full overflow-hidden whitespace-nowrap text-ellipsis ">
